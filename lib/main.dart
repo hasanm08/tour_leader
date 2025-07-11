@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:tour_leader/stroke_text.dart';
 
 void main() => runApp(const TourismApp());
 
@@ -355,8 +356,10 @@ class _FlipCardState extends State<FlipCard>
       ),
       alignment: Alignment.center,
       padding: const EdgeInsets.all(20),
-      child: Text(
+      child: StrokeText(
         text,
+        strokeColor: Colors.black,
+        strokeWidth: 1.5,
         style: TextStyle(
           fontSize: 24,
           color: back ? Colors.black : Colors.white,
