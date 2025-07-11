@@ -623,7 +623,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
           ),
           const SizedBox(height: 20),
           ElevatedButton.icon(
-            onPressed: () => context.go('/'),
+            onPressed: () => context.pushNamed('main'),
             icon: const Icon(Icons.explore),
             label: const Text('Explore Destinations'),
             style: ElevatedButton.styleFrom(
@@ -675,8 +675,9 @@ class _ToursPageState extends ConsumerState<ToursPage>
                                 height:
                                     280 * 9 / 16, // Maintain 16:9 aspect ratio
                                 onTap:
-                                    () => context.go(
-                                      '/destination/${destination.id}',
+                                    () => context.pushNamed(
+                                      'destination_detail',
+                                      pathParameters: {'id': destination.id},
                                     ),
                               ),
                             );
@@ -728,21 +729,21 @@ class _ToursPageState extends ConsumerState<ToursPage>
                       title: 'Explore Destinations',
                       subtitle: 'Find new places',
                       gradient: AppTheme.primaryGradient,
-                      onTap: () => context.go('/'),
+                      onTap: () => context.pushNamed('main'),
                     ),
                     _buildQuickActionCard(
                       icon: Icons.hotel,
                       title: 'Book Hotels',
                       subtitle: 'Find accommodation',
                       gradient: AppTheme.secondaryGradient,
-                      onTap: () => context.go('/hotel-booking'),
+                      onTap: () => context.pushNamed('hotel_booking'),
                     ),
                     _buildQuickActionCard(
                       icon: Icons.local_taxi,
                       title: 'Book Transport',
                       subtitle: 'Arrange travel',
                       gradient: AppTheme.accentGradient,
-                      onTap: () => context.go('/taxi-booking'),
+                      onTap: () => context.pushNamed('taxi_booking'),
                     ),
                     _buildQuickActionCard(
                       icon: Icons.view_in_ar,
@@ -751,7 +752,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
                       gradient: const LinearGradient(
                         colors: [Color(0xFF9C27B0), Color(0xFF673AB7)],
                       ),
-                      onTap: () => context.go('/virtual-tour'),
+                      onTap: () => context.pushNamed('virtual_tour'),
                     ),
                   ],
                 ),

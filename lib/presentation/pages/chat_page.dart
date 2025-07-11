@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tour_leader/core/extensions/context_extension.dart';
 import 'package:tour_leader/core/theme/app_theme.dart';
 import 'package:tour_leader/data/models/virtual_tour.dart';
 import 'package:tour_leader/data/services/sharing_service.dart';
 import 'package:tour_leader/presentation/widgets/tour_sharing_widget.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends ConsumerWidget {
   final String? contactName;
   final SharingService _sharingService = SharingService();
 
   ChatPage({super.key, this.contactName});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDarkMode = context.isDarkMode;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(contactName ?? 'Chat'),
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -95,7 +105,7 @@ class ChatPage extends StatelessWidget {
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: Colors.grey[50],
+                color: isDarkMode ? AppTheme.darkSurfaceColor : Colors.grey[50],
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
@@ -130,7 +140,7 @@ class ChatPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDarkMode ? AppTheme.darkSurfaceColor : Colors.white,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.1),
@@ -166,7 +176,10 @@ class ChatPage extends StatelessWidget {
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: Colors.grey[100],
+                      fillColor:
+                          isDarkMode
+                              ? AppTheme.darkBackgroundColor
+                              : Colors.grey[100],
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 12,

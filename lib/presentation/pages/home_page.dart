@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tour_leader/core/constants/app_constants.dart';
+import 'package:tour_leader/core/extensions/context_extension.dart';
 import 'package:tour_leader/core/theme/app_theme.dart';
 import 'package:tour_leader/data/models/destination.dart';
 import 'package:tour_leader/data/services/destination_service.dart';
@@ -10,27 +10,14 @@ import 'package:tour_leader/presentation/widgets/destination_card.dart';
 import 'package:tour_leader/presentation/widgets/search_bar_widget.dart';
 import 'package:tour_leader/presentation/widgets/section_header.dart';
 
-// Providers for caching data
-final featuredDestinationsProvider = FutureProvider<List<Destination>>((ref) {
-  return DestinationService().getFeaturedDestinations();
-});
-
-final popularDestinationsProvider = FutureProvider<List<Destination>>((ref) {
-  return DestinationService().getPopularDestinations();
-});
-
-final categoriesProvider = FutureProvider<List<String>>((ref) {
-  return DestinationService().getCategories();
-});
-
-class HomePage extends ConsumerStatefulWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  ConsumerState<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage>
+class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   final PageController _pageController = PageController(viewportFraction: 0.85);
   final PageController _popularController = PageController(
@@ -115,6 +102,8 @@ class _HomePageState extends ConsumerState<HomePage>
   }
 
   Widget _buildOptimizedSliverAppBar() {
+    final isDarkMode = context.isDarkMode;
+
     return SliverAppBar(
       expandedHeight: 140.0,
       floating: true,
@@ -124,15 +113,18 @@ class _HomePageState extends ConsumerState<HomePage>
         background: RepaintBoundary(
           child: Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppTheme.primaryColor.withOpacity(0.9),
-                  AppTheme.primaryColor.withOpacity(0.7),
-                  AppTheme.secondaryColor.withOpacity(0.8),
-                ],
-              ),
+              gradient:
+                  isDarkMode
+                      ? AppTheme.darkHeaderGradient
+                      : LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          AppTheme.primaryColor.withOpacity(0.9),
+                          AppTheme.primaryColor.withOpacity(0.7),
+                          AppTheme.secondaryColor.withOpacity(0.8),
+                        ],
+                      ),
             ),
           ),
         ),
@@ -205,7 +197,7 @@ class _HomePageState extends ConsumerState<HomePage>
         _buildIconButton(icon: Icons.notifications_outlined, onPressed: () {}),
         _buildIconButton(
           icon: Icons.shopping_cart_outlined,
-          onPressed: () => context.go('/tours'),
+          onPressed: () => context.pushNamed('tours'),
         ),
       ],
     );
@@ -235,221 +227,221 @@ class _HomePageState extends ConsumerState<HomePage>
   Widget _buildSearchSection() {
     return Container(
       padding: const EdgeInsets.all(AppConstants.defaultPadding),
-      child: SearchBarWidget(onTap: () => context.go('/search')),
+      child: SearchBarWidget(onTap: () => context.pushNamed('search')),
     );
   }
 
   Widget _buildFeaturedSection() {
-    return Consumer(
-      builder: (context, ref, child) {
-        final featuredAsync = ref.watch(featuredDestinationsProvider);
+    return FutureBuilder<List<Destination>>(
+      future: DestinationService().getFeaturedDestinations(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SizedBox(
+            height: 220,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
 
-        return featuredAsync.when(
-          data: (destinations) {
-            if (destinations.isEmpty) return const SizedBox.shrink();
+        if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+          return const SizedBox.shrink();
+        }
 
-            return RepaintBoundary(
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 16),
-                child: Column(
-                  children: [
-                    SectionHeader(
-                      title: '✨ Featured Destinations',
-                      subtitle: 'Handpicked for your next adventure',
-                      onSeeAll: () => context.go('/explore'),
-                    ),
-                    const SizedBox(height: 20),
-                    // Fixed height to prevent overflow
-                    SizedBox(
-                      height: 220, // Adjusted for 16:9 aspect ratio cards
-                      child: PageView.builder(
-                        controller: _pageController,
-                        itemCount: destinations.length,
-                        onPageChanged: (index) {
-                          setState(() {
-                            _currentCarouselIndex = index;
-                          });
-                        },
-                        itemBuilder: (context, index) {
-                          final destination = destinations[index];
-                          return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            child: RepaintBoundary(
-                              child: DestinationCard(
-                                destination: destination,
-                                enable3D:
-                                    false, // Disable 3D for better performance
-                                onTap:
-                                    () => context.go(
-                                      '/destination/${destination.id}',
-                                    ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    AnimatedSmoothIndicator(
-                      activeIndex: _currentCarouselIndex,
-                      count: destinations.length,
-                      effect: ExpandingDotsEffect(
-                        dotHeight: 8,
-                        dotWidth: 8,
-                        expansionFactor: 4,
-                        activeDotColor: AppTheme.primaryColor,
-                        dotColor: Colors.grey.withOpacity(0.3),
-                      ),
-                    ),
-                  ],
+        final destinations = snapshot.data!;
+
+        return RepaintBoundary(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              children: [
+                SectionHeader(
+                  title: '✨ Featured Destinations',
+                  subtitle: 'Handpicked for your next adventure',
+                  onSeeAll: () => context.pushNamed('explore'),
                 ),
-              ),
-            );
-          },
-          loading:
-              () => const SizedBox(
-                height: 220,
-                child: Center(child: CircularProgressIndicator()),
-              ),
-          error: (error, stack) => const SizedBox.shrink(),
+                const SizedBox(height: 20),
+                // Fixed height to prevent overflow
+                SizedBox(
+                  height: 220, // Adjusted for 16:9 aspect ratio cards
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: destinations.length,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentCarouselIndex = index;
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      final destination = destinations[index];
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        child: RepaintBoundary(
+                          child: DestinationCard(
+                            destination: destination,
+                            enable3D:
+                                false, // Disable 3D for better performance
+                            onTap:
+                                () => context.pushNamed(
+                                  'destination_detail',
+                                  pathParameters: {'id': destination.id},
+                                ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+                AnimatedSmoothIndicator(
+                  activeIndex: _currentCarouselIndex,
+                  count: destinations.length,
+                  effect: ExpandingDotsEffect(
+                    dotHeight: 8,
+                    dotWidth: 8,
+                    expansionFactor: 4,
+                    activeDotColor: AppTheme.primaryColor,
+                    dotColor: Colors.grey.withOpacity(0.3),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
   }
 
   Widget _buildPopularSection() {
-    return Consumer(
-      builder: (context, ref, child) {
-        final popularAsync = ref.watch(popularDestinationsProvider);
+    return FutureBuilder<List<Destination>>(
+      future: DestinationService().getPopularDestinations(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SizedBox(
+            height: 200,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
 
-        return popularAsync.when(
-          data: (destinations) {
-            if (destinations.isEmpty) return const SizedBox.shrink();
+        if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+          return const SizedBox.shrink();
+        }
 
-            final limitedDestinations = destinations.take(5).toList();
+        final destinations = snapshot.data!;
+        final limitedDestinations = destinations.take(5).toList();
 
-            return RepaintBoundary(
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 16),
-                child: Column(
-                  children: [
-                    SectionHeader(
-                      title: '🔥 Popular Destinations',
-                      subtitle: 'Top-rated by travelers worldwide',
-                      onSeeAll: () => context.go('/explore'),
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      height: 200, // Fixed height to prevent overflow
-                      child: PageView.builder(
-                        controller: _popularController,
-                        itemCount: limitedDestinations.length,
-                        onPageChanged: (index) {
-                          setState(() {
-                            _currentPopularIndex = index;
-                          });
-                        },
-                        itemBuilder: (context, index) {
-                          final destination = limitedDestinations[index];
-                          return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            child: RepaintBoundary(
-                              child: DestinationCard(
-                                destination: destination,
-                                enable3D:
-                                    false, // Disable 3D for better performance
-                                compact: true,
-                                onTap:
-                                    () => context.go(
-                                      '/destination/${destination.id}',
-                                    ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    AnimatedSmoothIndicator(
-                      activeIndex: _currentPopularIndex,
-                      count: limitedDestinations.length,
-                      effect: WormEffect(
-                        dotHeight: 8,
-                        dotWidth: 8,
-                        activeDotColor: AppTheme.secondaryColor,
-                        dotColor: Colors.grey.withOpacity(0.3),
-                      ),
-                    ),
-                  ],
+        return RepaintBoundary(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              children: [
+                SectionHeader(
+                  title: '🔥 Popular Destinations',
+                  subtitle: 'Top-rated by travelers worldwide',
+                  onSeeAll: () => context.pushNamed('explore'),
                 ),
-              ),
-            );
-          },
-          loading:
-              () => const SizedBox(
-                height: 200,
-                child: Center(child: CircularProgressIndicator()),
-              ),
-          error: (error, stack) => const SizedBox.shrink(),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: 200, // Fixed height to prevent overflow
+                  child: PageView.builder(
+                    controller: _popularController,
+                    itemCount: limitedDestinations.length,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentPopularIndex = index;
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      final destination = limitedDestinations[index];
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        child: RepaintBoundary(
+                          child: DestinationCard(
+                            destination: destination,
+                            enable3D:
+                                false, // Disable 3D for better performance
+                            compact: true,
+                            onTap:
+                                () => context.pushNamed(
+                                  'destination_detail',
+                                  pathParameters: {'id': destination.id},
+                                ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                AnimatedSmoothIndicator(
+                  activeIndex: _currentPopularIndex,
+                  count: limitedDestinations.length,
+                  effect: WormEffect(
+                    dotHeight: 8,
+                    dotWidth: 8,
+                    activeDotColor: AppTheme.secondaryColor,
+                    dotColor: Colors.grey.withOpacity(0.3),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
   }
 
   Widget _buildCategoriesSection() {
-    return Consumer(
-      builder: (context, ref, child) {
-        final categoriesAsync = ref.watch(categoriesProvider);
+    return FutureBuilder<List<String>>(
+      future: DestinationService().getCategories(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SizedBox(
+            height: 200,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
 
-        return categoriesAsync.when(
-          data: (categories) {
-            if (categories.isEmpty) return const SizedBox.shrink();
+        if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+          return const SizedBox.shrink();
+        }
 
-            final limitedCategories = categories.take(6).toList();
+        final categories = snapshot.data!;
+        final limitedCategories = categories.take(6).toList();
 
-            return RepaintBoundary(
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 16),
-                child: Column(
-                  children: [
-                    SectionHeader(
-                      title: '📍 Categories',
-                      subtitle: 'Explore by your interests',
-                      onSeeAll: () => context.go('/explore'),
-                    ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: 16,
-                              mainAxisSpacing: 16,
-                              childAspectRatio: 0.9,
-                            ),
-                        itemCount: limitedCategories.length,
-                        itemBuilder: (context, index) {
-                          final category = limitedCategories[index];
-                          return RepaintBoundary(
-                            child: _buildCategoryCard(category, index),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+        return RepaintBoundary(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              children: [
+                SectionHeader(
+                  title: '📍 Categories',
+                  subtitle: 'Explore by your interests',
+                  onSeeAll: () => context.pushNamed('explore'),
                 ),
-              ),
-            );
-          },
-          loading:
-              () => const SizedBox(
-                height: 200,
-                child: Center(child: CircularProgressIndicator()),
-              ),
-          error: (error, stack) => const SizedBox.shrink(),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 0.9,
+                        ),
+                    itemCount: limitedCategories.length,
+                    itemBuilder: (context, index) {
+                      final category = limitedCategories[index];
+                      return RepaintBoundary(
+                        child: _buildCategoryCard(category, index),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
@@ -492,7 +484,7 @@ class _HomePageState extends ConsumerState<HomePage>
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
-          onTap: () => context.go('/explore?category=$category'),
+          onTap: () => context.pushNamed('explore'),
           borderRadius: BorderRadius.circular(16),
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -542,7 +534,7 @@ class _HomePageState extends ConsumerState<HomePage>
                     'Virtual Tours',
                     Icons.view_in_ar,
                     AppTheme.primaryGradient,
-                    () => context.go('/virtual-tour'),
+                    () => context.pushNamed('virtual_tour'),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -551,7 +543,7 @@ class _HomePageState extends ConsumerState<HomePage>
                     'My Tours',
                     Icons.card_travel,
                     AppTheme.secondaryGradient,
-                    () => context.go('/tours'),
+                    () => context.pushNamed('tours'),
                   ),
                 ),
               ],

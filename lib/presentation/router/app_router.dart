@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tour_leader/presentation/pages/chat_page.dart';
 import 'package:tour_leader/presentation/pages/destination_detail_page.dart';
+import 'package:tour_leader/presentation/pages/explore_page.dart';
 import 'package:tour_leader/presentation/pages/hotel_booking_page.dart';
 import 'package:tour_leader/presentation/pages/main_page.dart';
 import 'package:tour_leader/presentation/pages/profile_page.dart';
 import 'package:tour_leader/presentation/pages/search_page.dart';
 import 'package:tour_leader/presentation/pages/taxi_booking_page.dart';
+import 'package:tour_leader/presentation/pages/tours_page.dart';
 import 'package:tour_leader/presentation/pages/virtual_tour_page.dart';
 
-final appRouterProvider = Provider<GoRouter>((ref) {
-  return GoRouter(
+class AppRouter {
+  static GoRouter get router => _router;
+
+  static final GoRouter _router = GoRouter(
     initialLocation: '/',
     routes: [
       GoRoute(
@@ -31,6 +34,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/search',
         name: 'search',
         builder: (context, state) => const SearchPage(),
+      ),
+      GoRoute(
+        path: '/explore',
+        name: 'explore',
+        builder: (context, state) => const ExplorePage(),
+      ),
+      GoRoute(
+        path: '/tours',
+        name: 'tours',
+        builder: (context, state) => const ToursPage(),
       ),
       GoRoute(
         path: '/virtual-tour',
@@ -83,7 +96,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () => context.go('/'),
+                  onPressed: () => context.pushNamed('main'),
                   child: const Text('Go Home'),
                 ),
               ],
@@ -91,4 +104,4 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
         ),
   );
-});
+}

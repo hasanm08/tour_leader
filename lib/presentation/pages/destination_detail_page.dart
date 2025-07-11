@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:tour_leader/core/extensions/context_extension.dart';
 import 'package:tour_leader/core/theme/app_theme.dart';
 import 'package:tour_leader/data/models/destination.dart';
 import 'package:tour_leader/data/services/destination_service.dart';
@@ -99,11 +99,33 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
   }
 
   Widget _buildErrorState() {
+    final isDarkMode = context.isDarkMode;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Destination Details'),
+        title: Text(
+          'Destination Details',
+          style: TextStyle(
+            color:
+                isDarkMode
+                    ? AppTheme.darkTextPrimaryColor
+                    : AppTheme.textPrimaryColor,
+          ),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color:
+                isDarkMode
+                    ? AppTheme.darkTextPrimaryColor
+                    : AppTheme.textPrimaryColor,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: const Center(
         child: Column(
@@ -151,19 +173,36 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
   }
 
   Widget _buildSliverAppBar(Destination destination) {
+    final isDarkMode = context.isDarkMode;
+
     return SliverAppBar(
       expandedHeight: 0,
       floating: true,
       pinned: true,
-      backgroundColor: Colors.white,
+      backgroundColor: isDarkMode ? AppTheme.darkSurfaceColor : Colors.white,
       elevation: _showAppBarTitle ? 4 : 0,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+          color:
+              isDarkMode
+                  ? AppTheme.darkTextPrimaryColor
+                  : AppTheme.textPrimaryColor,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
       title: AnimatedOpacity(
         opacity: _showAppBarTitle ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 300),
         child: Text(
           destination.name,
-          style: const TextStyle(
-            color: AppTheme.textPrimaryColor,
+          style: TextStyle(
+            color:
+                isDarkMode
+                    ? AppTheme.darkTextPrimaryColor
+                    : AppTheme.textPrimaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -174,14 +213,20 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
             // Add to favorites functionality
           },
           icon: const Icon(Icons.favorite_border),
-          color: AppTheme.textPrimaryColor,
+          color:
+              isDarkMode
+                  ? AppTheme.darkTextPrimaryColor
+                  : AppTheme.textPrimaryColor,
         ),
         IconButton(
           onPressed: () {
             // Share functionality
           },
           icon: const Icon(Icons.share),
-          color: AppTheme.textPrimaryColor,
+          color:
+              isDarkMode
+                  ? AppTheme.darkTextPrimaryColor
+                  : AppTheme.textPrimaryColor,
         ),
       ],
     );
@@ -245,6 +290,8 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
   }
 
   Widget _buildDestinationInfo(Destination destination) {
+    final isDarkMode = context.isDarkMode;
+
     return RepaintBoundary(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -256,10 +303,13 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
                 Expanded(
                   child: Text(
                     destination.name,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.textPrimaryColor,
+                      color:
+                          isDarkMode
+                              ? AppTheme.darkTextPrimaryColor
+                              : AppTheme.textPrimaryColor,
                     ),
                   ),
                 ),
@@ -269,7 +319,10 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    gradient: AppTheme.primaryGradient,
+                    gradient:
+                        isDarkMode
+                            ? AppTheme.darkPrimaryGradient
+                            : AppTheme.primaryGradient,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
@@ -294,9 +347,12 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
                 const SizedBox(width: 4),
                 Text(
                   '${destination.city}, ${destination.country}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
-                    color: AppTheme.textSecondaryColor,
+                    color:
+                        isDarkMode
+                            ? AppTheme.darkTextSecondaryColor
+                            : AppTheme.textSecondaryColor,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -321,9 +377,12 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
                 const SizedBox(width: 8),
                 Text(
                   '${destination.rating.toStringAsFixed(1)} (${destination.reviewCount} reviews)',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: AppTheme.textSecondaryColor,
+                    color:
+                        isDarkMode
+                            ? AppTheme.darkTextSecondaryColor
+                            : AppTheme.textSecondaryColor,
                   ),
                 ),
               ],
@@ -359,10 +418,15 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
     required String label,
     required String value,
   }) {
+    final isDarkMode = context.isDarkMode;
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppTheme.primaryColor.withOpacity(0.1),
+        color:
+            isDarkMode
+                ? AppTheme.primaryColor.withOpacity(0.15)
+                : AppTheme.primaryColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -371,20 +435,26 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
-              color: AppTheme.textSecondaryColor,
+              color:
+                  isDarkMode
+                      ? AppTheme.darkTextSecondaryColor
+                      : AppTheme.textSecondaryColor,
+              fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 2),
           Text(
             value,
-            style: const TextStyle(
-              fontSize: 12,
+            style: TextStyle(
+              fontSize: 14,
+              color:
+                  isDarkMode
+                      ? AppTheme.darkTextPrimaryColor
+                      : AppTheme.textPrimaryColor,
               fontWeight: FontWeight.w600,
-              color: AppTheme.textPrimaryColor,
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -738,7 +808,7 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
         action: SnackBarAction(
           label: 'View Tours',
           textColor: Colors.white,
-          onPressed: () => context.go('/tours'),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
     );
