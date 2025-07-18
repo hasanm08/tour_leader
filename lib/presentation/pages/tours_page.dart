@@ -61,26 +61,153 @@ class _ToursPageState extends ConsumerState<ToursPage>
   }
 
   void _initializeMockTours() {
-    // Convert Tour objects to VirtualTour objects for sharing
+    // Create more realistic mock tours with destinations
     final now = DateTime.now();
+
+    // Create some sample destinations
+    final santorini = Destination(
+      id: 'santorini',
+      name: 'Santorini',
+      description: 'Beautiful Greek island with stunning sunsets',
+      longDescription:
+          'Santorini is a stunning Greek island known for its dramatic views, stunning sunsets, and white-washed buildings with blue domes.',
+      country: 'Greece',
+      city: 'Santorini',
+      latitude: 36.3932,
+      longitude: 25.4615,
+      imageUrls: ['assets/images/santorini.jpg'],
+      price: 299.99,
+      currency: 'USD',
+      isPopular: true,
+      isFeatured: true,
+      bestTimeToVisit: 'May to October',
+      activities: ['Sunset viewing', 'Wine tasting', 'Beach hopping'],
+      createdAt: now,
+      updatedAt: now,
+    );
+
+    final bali = Destination(
+      id: 'bali',
+      name: 'Bali',
+      description: 'Tropical paradise with rich culture',
+      longDescription:
+          'Bali is an Indonesian island known for its forested volcanic mountains, iconic rice paddies, beaches and coral reefs.',
+      country: 'Indonesia',
+      city: 'Bali',
+      latitude: -8.3405,
+      longitude: 115.0920,
+      imageUrls: ['assets/images/bali.jpg'],
+      price: 399.99,
+      currency: 'USD',
+      isPopular: true,
+      isFeatured: true,
+      bestTimeToVisit: 'April to October',
+      activities: ['Temple visits', 'Beach activities', 'Cultural tours'],
+      createdAt: now,
+      updatedAt: now,
+    );
+
+    final kyoto = Destination(
+      id: 'kyoto',
+      name: 'Kyoto',
+      description: 'Ancient Japanese capital with temples',
+      longDescription:
+          'Kyoto is a city on the island of Honshu, Japan. It\'s famous for its numerous classical Buddhist temples, gardens, imperial palaces, Shinto shrines and traditional wooden houses.',
+      country: 'Japan',
+      city: 'Kyoto',
+      latitude: 35.0116,
+      longitude: 135.7681,
+      imageUrls: ['assets/images/kyoto.jpg'],
+      price: 499.99,
+      currency: 'USD',
+      isPopular: true,
+      isFeatured: true,
+      bestTimeToVisit: 'March to May and October to November',
+      activities: ['Temple tours', 'Cherry blossom viewing', 'Tea ceremonies'],
+      createdAt: now,
+      updatedAt: now,
+    );
+
+    final cappadocia = Destination(
+      id: 'cappadocia',
+      name: 'Cappadocia',
+      description: 'Magical landscape with hot air balloons',
+      longDescription:
+          'Cappadocia is a historical region in Central Anatolia, Turkey. It is famous for its unique rock formations and hot air balloon rides.',
+      country: 'Turkey',
+      city: 'Cappadocia',
+      latitude: 38.6431,
+      longitude: 34.8283,
+      imageUrls: ['assets/images/cappadocia.jpg'],
+      price: 349.99,
+      currency: 'USD',
+      isPopular: true,
+      isFeatured: true,
+      bestTimeToVisit: 'April to June and September to November',
+      activities: ['Hot air balloon rides', 'Cave exploration', 'Hiking'],
+      createdAt: now,
+      updatedAt: now,
+    );
+
+    final banff = Destination(
+      id: 'banff',
+      name: 'Banff',
+      description: 'Canadian Rockies mountain paradise',
+      longDescription:
+          'Banff is a resort town in the province of Alberta, located within Banff National Park. The peaks of Canada\'s first national park offer dramatic views.',
+      country: 'Canada',
+      city: 'Banff',
+      latitude: 51.1784,
+      longitude: -115.5708,
+      imageUrls: ['assets/images/banff.jpg'],
+      price: 449.99,
+      currency: 'USD',
+      isPopular: true,
+      isFeatured: true,
+      bestTimeToVisit: 'June to September',
+      activities: ['Hiking', 'Wildlife viewing', 'Lake activities'],
+      createdAt: now,
+      updatedAt: now,
+    );
+
     _tours = [
       Tour(
         id: '1',
         name: 'Mediterranean Adventure',
-        description: 'Explore the beautiful Mediterranean coastline',
-        destinations: [],
+        description:
+            'Explore the beautiful Mediterranean coastline with stunning islands and rich history',
+        destinations: [santorini, bali],
         totalPrice: 1299.99,
-        duration: 7,
-        createdAt: DateTime.now(),
+        duration: 14,
+        createdAt: now.subtract(const Duration(days: 30)),
       ),
       Tour(
         id: '2',
         name: 'Asian Cultural Journey',
-        description: 'Discover ancient temples and modern cities',
-        destinations: [],
+        description: 'Discover ancient temples and modern cities across Asia',
+        destinations: [kyoto, bali],
         totalPrice: 1799.99,
-        duration: 10,
-        createdAt: DateTime.now(),
+        duration: 21,
+        createdAt: now.subtract(const Duration(days: 15)),
+      ),
+      Tour(
+        id: '3',
+        name: 'European Explorer',
+        description: 'Experience the best of European culture and landscapes',
+        destinations: [santorini, cappadocia],
+        totalPrice: 1599.99,
+        duration: 18,
+        createdAt: now.subtract(const Duration(days: 7)),
+      ),
+      Tour(
+        id: '4',
+        name: 'Nature & Adventure',
+        description:
+            'Connect with nature in some of the world\'s most beautiful landscapes',
+        destinations: [banff, cappadocia],
+        totalPrice: 1399.99,
+        duration: 16,
+        createdAt: now.subtract(const Duration(days: 3)),
       ),
     ];
   }
@@ -383,12 +510,13 @@ class _ToursPageState extends ConsumerState<ToursPage>
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header with tour info
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(10),
@@ -422,6 +550,8 @@ class _ToursPageState extends ConsumerState<ToursPage>
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppTheme.textSecondaryColor,
                         ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
@@ -447,8 +577,87 @@ class _ToursPageState extends ConsumerState<ToursPage>
                 ),
               ],
             ),
+          ),
+
+          // Destinations preview
+          if (tour.destinations.isNotEmpty) ...[
+            Container(
+              height: 80,
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: tour.destinations.length,
+                itemBuilder: (context, index) {
+                  final destination = tour.destinations[index];
+                  return Container(
+                    width: 120,
+                    margin: const EdgeInsets.only(right: 12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 5,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Image.asset(
+                              destination.imageUrls.isNotEmpty
+                                  ? destination.imageUrls.first
+                                  : 'assets/images/placeholder.jpg',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.transparent,
+                                    Colors.black.withOpacity(0.7),
+                                  ],
+                                ),
+                              ),
+                              child: Text(
+                                destination.name,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
             const SizedBox(height: 16),
-            Row(
+          ],
+
+          // Tour details
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
               children: [
                 _buildTourInfoChip(
                   icon: Icons.schedule,
@@ -461,53 +670,25 @@ class _ToursPageState extends ConsumerState<ToursPage>
                   label: '${tour.destinations.length} places',
                   color: AppTheme.secondaryColor,
                 ),
-                const SizedBox(width: 8),
-                _buildTourInfoChip(
-                  icon: Icons.people,
-                  label: '19 needed',
-                  color: AppTheme.primaryColor,
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // Participants progress bar
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Participants',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: AppTheme.textSecondaryColor,
-                      ),
-                    ),
-                    const Text(
-                      '1 / 20',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.primaryColor,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                LinearProgressIndicator(
-                  value: 1 / 20,
-                  backgroundColor: Colors.grey[200],
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    AppTheme.primaryColor,
+                const Spacer(),
+                Text(
+                  '\$${tour.totalPrice.toStringAsFixed(0)}',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.primaryColor,
                   ),
-                  minHeight: 4,
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            Row(
+          ),
+
+          const SizedBox(height: 16),
+
+          // Action buttons
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
               children: [
                 Expanded(
                   child: ElevatedButton.icon(
@@ -553,8 +734,9 @@ class _ToursPageState extends ConsumerState<ToursPage>
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
@@ -831,58 +1013,168 @@ class _ToursPageState extends ConsumerState<ToursPage>
   }
 
   void _showCreateTourDialog() {
+    final TextEditingController descriptionController = TextEditingController();
+    final TextEditingController durationController = TextEditingController();
+    final TextEditingController budgetController = TextEditingController();
+
     showDialog(
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('Create New Tour'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
+            title: Row(
               children: [
-                TextField(
-                  controller: _tourNameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Tour Name',
-                    hintText: 'Enter tour name',
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    gradient: AppTheme.primaryGradient,
+                    borderRadius: BorderRadius.circular(8),
                   ),
+                  child: const Icon(Icons.add, color: Colors.white, size: 20),
                 ),
-                const SizedBox(height: 16),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Description',
-                    hintText: 'Describe your tour',
-                  ),
-                  maxLines: 3,
-                ),
+                const SizedBox(width: 12),
+                const Text('Create New Tour'),
               ],
+            ),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: _tourNameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Tour Name *',
+                      hintText: 'e.g., Mediterranean Adventure',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: descriptionController,
+                    decoration: const InputDecoration(
+                      labelText: 'Description',
+                      hintText:
+                          'Describe your tour and what travelers can expect',
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 3,
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: durationController,
+                          decoration: const InputDecoration(
+                            labelText: 'Duration (days)',
+                            hintText: '7',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: TextField(
+                          controller: budgetController,
+                          decoration: const InputDecoration(
+                            labelText: 'Budget (\$)',
+                            hintText: '1500',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: AppTheme.primaryColor.withOpacity(0.3),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline,
+                          color: AppTheme.primaryColor,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'You can add destinations to your tour after creation',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  _tourNameController.clear();
+                  Navigator.of(context).pop();
+                },
                 child: const Text('Cancel'),
               ),
               ElevatedButton(
                 onPressed: () {
                   if (_tourNameController.text.isNotEmpty) {
-                    _createNewTour(_tourNameController.text);
+                    final duration = int.tryParse(durationController.text) ?? 7;
+                    final budget =
+                        double.tryParse(budgetController.text) ?? 1500.0;
+
+                    _createNewTour(
+                      _tourNameController.text,
+                      descriptionController.text,
+                      duration,
+                      budget,
+                    );
                     Navigator.of(context).pop();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please enter a tour name'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
                   }
                 },
-                child: const Text('Create'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primaryColor,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Create Tour'),
               ),
             ],
           ),
     );
   }
 
-  void _createNewTour(String name) {
+  void _createNewTour(
+    String name,
+    String description,
+    int duration,
+    double budget,
+  ) {
     final newTour = Tour(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: name,
-      description: 'Custom tour created by user',
+      description:
+          description.isNotEmpty ? description : 'Custom tour created by user',
       destinations: [],
-      totalPrice: 0,
-      duration: 0,
+      totalPrice: budget,
+      duration: duration,
       createdAt: DateTime.now(),
     );
 
@@ -892,8 +1184,19 @@ class _ToursPageState extends ConsumerState<ToursPage>
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Tour "$name" created successfully!'),
-        backgroundColor: AppTheme.successColor,
+        content: Row(
+          children: [
+            const Icon(Icons.check_circle, color: Colors.white),
+            const SizedBox(width: 8),
+            Expanded(child: Text('Tour "$name" created successfully!')),
+          ],
+        ),
+        backgroundColor: AppTheme.primaryColor,
+        action: SnackBarAction(
+          label: 'View',
+          textColor: Colors.white,
+          onPressed: () => _viewTourDetails(newTour),
+        ),
       ),
     );
 

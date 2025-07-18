@@ -8,6 +8,7 @@ import 'package:tour_leader/presentation/pages/main_page.dart';
 import 'package:tour_leader/presentation/pages/profile_page.dart';
 import 'package:tour_leader/presentation/pages/search_page.dart';
 import 'package:tour_leader/presentation/pages/taxi_booking_page.dart';
+import 'package:tour_leader/presentation/pages/tours_page.dart';
 import 'package:tour_leader/presentation/pages/virtual_tour_page.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -31,6 +32,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/search',
         name: 'search',
         builder: (context, state) => const SearchPage(),
+      ),
+      GoRoute(
+        path: '/tours',
+        name: 'tours',
+        builder: (context, state) => const ToursPage(),
       ),
       GoRoute(
         path: '/virtual-tour',

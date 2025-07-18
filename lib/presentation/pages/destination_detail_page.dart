@@ -35,7 +35,7 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
   int _currentImageIndex = 0;
   bool _showAppBarTitle = false;
   bool _isAddedToTour = false;
-
+  bool _isFavorite = false;
   @override
   void initState() {
     super.initState();
@@ -169,12 +169,27 @@ class _DestinationDetailPageState extends ConsumerState<DestinationDetailPage>
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            // Add to favorites functionality
+        InkWell(
+          onTap: () {
+            setState(() {
+              _isFavorite = !_isFavorite;
+            });
           },
-          icon: const Icon(Icons.favorite_border),
-          color: AppTheme.textPrimaryColor,
+          child: AnimatedCrossFade(
+            firstCurve: Curves.easeInOut,
+            secondCurve: Curves.easeInOut,
+            sizeCurve: Curves.easeInOut,
+            duration: const Duration(milliseconds: 370),
+            firstChild: const Icon(Icons.favorite_border, color: Colors.red),
+            secondChild: const Icon(
+              Icons.favorite,
+              color: AppTheme.primaryColor,
+            ),
+            crossFadeState:
+                _isFavorite
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
+          ),
         ),
         IconButton(
           onPressed: () {

@@ -29,7 +29,7 @@ class _DestinationCardState extends State<DestinationCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-
+  bool isFavorite = false;
   @override
   void initState() {
     super.initState();
@@ -222,10 +222,33 @@ class _DestinationCardState extends State<DestinationCard>
                       ),
                     ],
                   ),
-                  child: Icon(
-                    Icons.favorite_border, // TODO: Add favorite functionality
-                    color: Colors.white,
-                    size: 16,
+                  child: InkWell(
+                    onTap: () {
+                      // Add favorite functionality here
+                      setState(() {
+                        isFavorite = !isFavorite;
+                      });
+                    },
+                    child: AnimatedCrossFade(
+                      firstCurve: Curves.easeInOut,
+                      secondCurve: Curves.easeInOut,
+                      sizeCurve: Curves.easeInOut,
+                      duration: const Duration(milliseconds: 370),
+                      firstChild: Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                        size: 16,
+                      ),
+                      secondChild: Icon(
+                        Icons.favorite_border,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                      crossFadeState:
+                          isFavorite
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
+                    ),
                   ),
                 ),
               ),
