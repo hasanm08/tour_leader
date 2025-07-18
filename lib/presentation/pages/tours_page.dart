@@ -445,7 +445,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
                 const SizedBox(height: 16),
                 if (_tours.isNotEmpty) ...[
                   SizedBox(
-                    height: 280,
+                    height: 316,
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: _tours.length,
