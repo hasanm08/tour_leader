@@ -220,7 +220,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Icon(
@@ -249,7 +249,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(Icons.filter_list, color: Colors.white, size: 20),
@@ -262,7 +262,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(Icons.search, color: Colors.white, size: 20),
@@ -285,7 +285,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.primaryColor.withOpacity(0.3),
+            color: AppTheme.primaryColor.withValues(alpha: 0.3),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -296,7 +296,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Icon(Icons.view_in_ar, color: Colors.white, size: 48),
@@ -388,7 +388,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
                           color:
                               index == _currentTourIndex
                                   ? AppTheme.primaryColor
-                                  : Colors.grey.withOpacity(0.3),
+                                  : Colors.grey.withValues(alpha: 0.3),
                         ),
                       ),
                     ),
@@ -414,7 +414,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -440,7 +440,10 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withValues(alpha: 0.7),
+                    ],
                   ),
                 ),
               ),
@@ -479,7 +482,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Icon(
@@ -536,7 +539,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
                           icon: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
+                              color: Colors.white.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Icon(
@@ -626,7 +629,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: gradient.colors.first.withOpacity(0.3),
+            color: gradient.colors.first.withValues(alpha: 0.3),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -683,7 +686,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.grey.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -770,7 +773,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
             title: const Text('360° Panoramic View'),
             subtitle: const Text('Explore destinations in full 360°'),
             onTap: () {
-              Navigator.pop(context);
+              context.pop();
               _showVirtualTourExperience(null);
             },
           ),
@@ -782,7 +785,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
             title: const Text('Video Tour'),
             subtitle: const Text('Watch guided video tours'),
             onTap: () {
-              Navigator.pop(context);
+              context.pop();
               _showVideoTourExperience();
             },
           ),
@@ -794,7 +797,7 @@ class _VirtualTourPageState extends ConsumerState<VirtualTourPage>
             title: const Text('Photo Gallery'),
             subtitle: const Text('Browse high-quality photos'),
             onTap: () {
-              Navigator.pop(context);
+              context.pop();
               _showPhotoGalleryExperience();
             },
           ),

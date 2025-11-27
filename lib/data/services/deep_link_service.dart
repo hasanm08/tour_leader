@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tour_leader/data/services/sharing_service.dart';
 
 class DeepLinkService {
@@ -18,9 +19,9 @@ class DeepLinkService {
   Future<void> initialize() async {
     // Handle app opened from deep link
     try {
-      final initialLink = await _appLinks.getInitialAppLink();
+      final initialLink = await _appLinks.getInitialLinkString();
       if (initialLink != null) {
-        handleDeepLink(initialLink.toString());
+        handleDeepLink(initialLink);
       }
     } catch (e) {
       print('Error getting initial link: $e');
@@ -133,13 +134,13 @@ class TourInvitationDialog extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  const Color(0xFF4285F4).withOpacity(0.1),
-                  const Color(0xFF34A853).withOpacity(0.1),
+                  const Color(0xFF4285F4).withValues(alpha: 0.1),
+                  const Color(0xFF34A853).withValues(alpha: 0.1),
                 ],
               ),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: const Color(0xFF4285F4).withOpacity(0.3),
+                color: const Color(0xFF4285F4).withValues(alpha: 0.3),
               ),
             ),
             child: Column(
@@ -217,7 +218,7 @@ class TourInvitationDialog extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.pop(),
           child: const Text(
             'Maybe Later',
             style: TextStyle(color: Colors.grey),
@@ -225,7 +226,7 @@ class TourInvitationDialog extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            context.pop();
             _joinTour(context, tourInfo);
           },
           style: ElevatedButton.styleFrom(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tour_leader/core/theme/app_theme.dart';
 import 'package:tour_leader/data/models/virtual_tour.dart';
 import 'package:tour_leader/data/services/sharing_service.dart';
@@ -42,12 +43,14 @@ class ChatPage extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppTheme.primaryColor.withOpacity(0.1),
-                  AppTheme.secondaryColor.withOpacity(0.1),
+                  AppTheme.primaryColor.withValues(alpha: 0.1),
+                  AppTheme.secondaryColor.withValues(alpha: 0.1),
                 ],
               ),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppTheme.primaryColor.withOpacity(0.2)),
+              border: Border.all(
+                color: AppTheme.primaryColor.withValues(alpha: 0.2),
+              ),
             ),
             child: Row(
               children: [
@@ -133,7 +136,7 @@ class ChatPage extends StatelessWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 10,
                   offset: const Offset(0, -2),
                 ),
@@ -274,13 +277,13 @@ class ChatPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppTheme.primaryColor.withOpacity(0.1),
-                      AppTheme.secondaryColor.withOpacity(0.1),
+                      AppTheme.primaryColor.withValues(alpha: 0.1),
+                      AppTheme.secondaryColor.withValues(alpha: 0.1),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: AppTheme.primaryColor.withOpacity(0.2),
+                    color: AppTheme.primaryColor.withValues(alpha: 0.2),
                   ),
                 ),
                 child: Column(
@@ -332,7 +335,7 @@ class ChatPage extends StatelessWidget {
                         Expanded(
                           child: ElevatedButton.icon(
                             onPressed: () {
-                              Navigator.pop(context);
+                              context.pop();
                               _shareTourInChat(context, mockTour);
                             },
                             icon: const Icon(Icons.message, size: 16),
@@ -349,7 +352,7 @@ class ChatPage extends StatelessWidget {
                         const SizedBox(width: 12),
                         ElevatedButton.icon(
                           onPressed: () {
-                            Navigator.pop(context);
+                            context.pop();
                             TourSharingWidget.show(context, mockTour);
                           },
                           icon: const Icon(Icons.share, size: 16),

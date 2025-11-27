@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tour_leader/core/theme/app_theme.dart';
 import 'package:tour_leader/data/models/virtual_tour.dart';
 import 'package:tour_leader/data/services/sharing_service.dart';
@@ -88,13 +89,13 @@ class TourSharingWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppTheme.primaryColor.withOpacity(0.1),
-                      AppTheme.secondaryColor.withOpacity(0.1),
+                      AppTheme.primaryColor.withValues(alpha: 0.1),
+                      AppTheme.secondaryColor.withValues(alpha: 0.1),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: AppTheme.primaryColor.withOpacity(0.2),
+                    color: AppTheme.primaryColor.withValues(alpha: 0.2),
                   ),
                 ),
                 child: Column(
@@ -266,7 +267,7 @@ class TourSharingWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -301,7 +302,7 @@ class TourSharingWidget extends StatelessWidget {
                 ),
               );
             } else {
-              Navigator.pop(context);
+              context.pop();
             }
           }
         } catch (e) {
@@ -319,10 +320,10 @@ class TourSharingWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Color(option.color).withOpacity(0.2)),
+          border: Border.all(color: Color(option.color).withValues(alpha: 0.2)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -335,7 +336,7 @@ class TourSharingWidget extends StatelessWidget {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                color: Color(option.color).withOpacity(0.1),
+                color: Color(option.color).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(

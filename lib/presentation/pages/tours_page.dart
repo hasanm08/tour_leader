@@ -299,7 +299,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Icon(
@@ -393,9 +393,9 @@ class _ToursPageState extends ConsumerState<ToursPage>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         children: [
@@ -414,7 +414,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
             title,
             style: TextStyle(
               fontSize: 12,
-              color: color.withOpacity(0.8),
+              color: color.withValues(alpha: 0.8),
               fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.center,
@@ -477,7 +477,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
                           color:
                               index == _currentTourIndex
                                   ? AppTheme.primaryColor
-                                  : Colors.grey.withOpacity(0.3),
+                                  : Colors.grey.withValues(alpha: 0.3),
                         ),
                       ),
                     ),
@@ -499,12 +499,12 @@ class _ToursPageState extends ConsumerState<ToursPage>
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Colors.white, AppTheme.primaryColor.withOpacity(0.05)],
+          colors: [Colors.white, AppTheme.primaryColor.withValues(alpha: 0.05)],
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -596,7 +596,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           blurRadius: 5,
                           offset: const Offset(0, 2),
                         ),
@@ -629,7 +629,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
                                   end: Alignment.bottomCenter,
                                   colors: [
                                     Colors.transparent,
-                                    Colors.black.withOpacity(0.7),
+                                    Colors.black.withValues(alpha: 0.7),
                                   ],
                                 ),
                               ),
@@ -749,7 +749,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -778,7 +778,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: AppTheme.primaryColor.withOpacity(0.1),
+              color: AppTheme.primaryColor.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -958,7 +958,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: gradient.colors.first.withOpacity(0.3),
+            color: gradient.colors.first.withValues(alpha: 0.3),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -1090,10 +1090,10 @@ class _ToursPageState extends ConsumerState<ToursPage>
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withOpacity(0.1),
+                      color: AppTheme.primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: AppTheme.primaryColor.withOpacity(0.3),
+                        color: AppTheme.primaryColor.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Row(
@@ -1123,7 +1123,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
               TextButton(
                 onPressed: () {
                   _tourNameController.clear();
-                  Navigator.of(context).pop();
+                  context.pop();
                 },
                 child: const Text('Cancel'),
               ),
@@ -1140,7 +1140,7 @@ class _ToursPageState extends ConsumerState<ToursPage>
                       duration,
                       budget,
                     );
-                    Navigator.of(context).pop();
+                    context.pop();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
